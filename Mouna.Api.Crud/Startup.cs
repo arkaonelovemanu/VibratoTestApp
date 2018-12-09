@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +37,7 @@ namespace Mouna.Api.Crud
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddCors();
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddTransient<IDbConnection>(sp => new SqlConnection("Server=localhost,1433;Database=master;User=SA;Password=Welcome@1SA;"));
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info
                 {

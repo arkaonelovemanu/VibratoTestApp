@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DataAccess\Repository\" />
+    <Folder Include="DataAccess\Models\" />
+    <Folder Include="DataAccess\Interfaces\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

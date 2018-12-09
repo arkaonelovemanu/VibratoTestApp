@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mouna.Api.Crud.Controllers
+namespace Mouna.Api.Crud.Controllers.V1
 {
-    [Route("api/[controller]")]
+    [Route("api/V1/[controller]")]
     public class EmployeeController : Controller
     {
         // GET api/values

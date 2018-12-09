@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mouna.Api.Crud.BusinessLogic.Interfaces;
 using Mouna.Api.Crud.BusinessLogic.Services;
+using Mouna.Api.Crud.DataAccess.Interfaces;
+using Mouna.Api.Crud.DataAccess.Repository;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -30,8 +34,10 @@ namespace Mouna.Api.Crud
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddCors();
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddTransient<IDbConnection>(sp => new SqlConnection("Server=localhost,1433;Database=master;User=SA;Password=Welcome@1SA;"));
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info
                 {

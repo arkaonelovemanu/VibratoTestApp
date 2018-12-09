@@ -6,6 +6,7 @@ using Mouna.Api.Crud.BusinessLogic.Models;
 using Mouna.Api.Crud.Entities;
 using Mouna.Api.Crud.BusinessLogic.Mapper;
 using Mouna.Api.Crud.BusinessLogic.Interfaces;
+using Mouna.Api.Crud.DataAccess.Interfaces;
 
 namespace Mouna.Api.Crud.BusinessLogic.Services
 {
@@ -14,49 +15,41 @@ namespace Mouna.Api.Crud.BusinessLogic.Services
 
         private readonly List<EmployeeBLL> employees;
 
-        public EmployeeService()
+        private readonly IEmployeeRepository employeeRepository;
+
+        public EmployeeService(IEmployeeRepository repo)
         {
-            this.employees = new List<EmployeeBLL>
-            {
-                new EmployeeBLL { Id = 1, Name="Doug Stark", Salary="10000" },
-                new EmployeeBLL { Id = 2, Name="Jon Michael", Salary="20000" },
-                new EmployeeBLL { Id = 3, Name="Kirk Hamett", Salary="30000" },
-                new EmployeeBLL { Id = 4, Name="Robert Plant", Salary="30000" }
-            };
+            this.employeeRepository = repo;
         }
 
         public List<EmployeeBLL> GetEmployees()
         {
-            return this.employees.ToList();
-
+            return Map.ToBLL(employeeRepository.GetEmployees().ToList());
         }
 
         public EmployeeBLL GetEmployee(int id)
         {
-            return this.employees.Where(m => m.Id == id).FirstOrDefault();
+            return Map.ToBLL(employeeRepository.GetEmployee(id).ToList().Where(m => m.Id == id).FirstOrDefault());
         }
 
         public void AddEmployee(EmployeeBLL item)
         {
-            this.employees.Add(item);
+            int numberOfRowsAffected = employeeRepository.AddEmployee(Map.ToDataAccess(item));
         }
 
         public void UpdateEmployee(EmployeeBLL item)
         {
-            var model = this.employees.Where(m => m.Id == item.Id).FirstOrDefault();
+            int numberOfRowsAffected = employeeRepository.UpdateEmployee(Map.ToDataAccess(item));
         }
 
         public void DeleteEmployee(int id)
         {
-            var model = this.employees.Where(m => m.Id == id).FirstOrDefault();
-
-            this.employees.Remove(model);
-
+            int numberOfRowsAffected = employeeRepository.DeleteEmployee(id);
         }
 
         public bool EmployeeExists(int id)
         {
-            return this.employees.ToList().Any(m => m.Id == id);
+            return employeeRepository.GetEmployee(id).ToList().Any(m => m.Id == id);
         }
     }
 }

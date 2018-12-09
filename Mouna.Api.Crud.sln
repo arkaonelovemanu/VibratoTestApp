@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mouna.Api.Crud", "Mouna.Api.Crud\Mouna.Api.Crud.csproj", "{A95E3883-C977-4DAC-9654-32790B37A302}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A95E3883-C977-4DAC-9654-32790B37A302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A95E3883-C977-4DAC-9654-32790B37A302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A95E3883-C977-4DAC-9654-32790B37A302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A95E3883-C977-4DAC-9654-32790B37A302}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49855B7F-74F5-4E62-8538-206339DD3B76}
+	EndGlobalSection
+EndGlobal

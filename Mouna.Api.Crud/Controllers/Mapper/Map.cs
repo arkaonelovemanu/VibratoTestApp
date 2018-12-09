@@ -10,7 +10,7 @@ namespace Mouna.Api.Crud.Controllers.Mapper
     public static class Map
     {
 
-        private static EmployeeBLL ToDomainModel(Employee inputModel)
+        public static EmployeeBLL ToDomainModel(Employee inputModel)
         {
             return new EmployeeBLL
             {
@@ -18,6 +18,22 @@ namespace Mouna.Api.Crud.Controllers.Mapper
                 Name = inputModel.Name,
                 Salary = inputModel.Salary
             };
+        }
+
+        public static Employee ToEntity(EmployeeBLL inputModel)
+        {
+            return new Employee
+            {
+                Id = inputModel.Id,
+                Name = inputModel.Name,
+                Salary = inputModel.Salary
+            };
+        }
+
+
+        public static List<Employee> ToEntity(List<EmployeeBLL> inputModelList)
+        {
+            return inputModelList.ConvertAll(x => new Employee { Id = x.Id, Name = x.Name, Salary = x.Salary });
         }
     }
 }

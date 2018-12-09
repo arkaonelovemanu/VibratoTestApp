@@ -25,15 +25,38 @@ namespace Mouna.Api.Crud.BusinessLogic.Services
             };
         }
 
-        public List<Employee> GetEmployees()
+        public List<EmployeeBLL> GetEmployees()
         {
-            return Map.ToEntity(this.employees.ToList());
+            return this.employees.ToList();
 
         }
 
-        public Employee GetEmployee(int id)
+        public EmployeeBLL GetEmployee(int id)
         {
-            return Map.ToEntity(this.employees.Where(m => m.Id == id).FirstOrDefault());
+            return this.employees.Where(m => m.Id == id).FirstOrDefault();
+        }
+
+        public void AddEmployee(EmployeeBLL item)
+        {
+            this.employees.Add(item);
+        }
+
+        public void UpdateEmployee(EmployeeBLL item)
+        {
+            var model = this.employees.Where(m => m.Id == item.Id).FirstOrDefault();
+        }
+
+        public void DeleteEmployee(int id)
+        {
+            var model = this.employees.Where(m => m.Id == id).FirstOrDefault();
+
+            this.employees.Remove(model);
+
+        }
+
+        public bool EmployeeExists(int id)
+        {
+            return this.employees.ToList().Any(m => m.Id == id);
         }
     }
 }

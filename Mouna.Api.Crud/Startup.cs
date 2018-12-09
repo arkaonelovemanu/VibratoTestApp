@@ -23,12 +23,11 @@ namespace Mouna.Api.Crud
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration configuration { get; }
+        public Startup(IConfiguration config)
         {
-            Configuration = configuration;
+            configuration = config;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,7 +36,7 @@ namespace Mouna.Api.Crud
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddCors();
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-            services.AddTransient<IDbConnection>(sp => new SqlConnection("Server=sqldb;Database=master;User=SA;Password=Welcome@1SA;"));
+           // services.AddTransient<IDbConnection>(sp => new SqlConnection("Server=sqldb;Database=master;User=SA;Password=Welcome@1SA;"));
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info
                 {

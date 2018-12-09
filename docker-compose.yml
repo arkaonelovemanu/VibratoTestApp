@@ -12,7 +12,18 @@ services:
      - "5000:5000"
     depends_on:
      - sqldb
+     - migration
 
+  migration:
+    container_name: 'flyaway-test'
+    build:
+      context: .
+      dockerfile: Migrations/Dockerfile
+    environment:
+        SA_USER: "SA"
+        SA_PASSWORD: "Welcome@1SA"
+    depends_on:
+      - sqldb
   sqldb:
     image: "mcr.microsoft.com/mssql/server"
     container_name: 'sqlserver-test'

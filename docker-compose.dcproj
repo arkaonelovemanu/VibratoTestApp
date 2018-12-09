@@ -14,5 +14,7 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="Migrations\Dockerfile" />
+    <None Include="Migrations\sql\V1__Create_employee_table.sql" />
   </ItemGroup>
 </Project>

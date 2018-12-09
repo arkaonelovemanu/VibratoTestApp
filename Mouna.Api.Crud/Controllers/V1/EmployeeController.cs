@@ -3,24 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Mouna.Api.Crud.Lib;
+using Mouna.Api.Crud.BusinessLogic.Models;
+using Mouna.Api.Crud.Entities;
+using Mouna.Api.Crud.BusinessLogic.Interfaces;
 
 namespace Mouna.Api.Crud.Controllers.V1
 {
     [Route("api/V1/[controller]")]
-    public class EmployeeController : Controller
+    public class EmployeeController :BaseController
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IEmployeeService employeeService;
+
+        public EmployeeController(IEmployeeService service)
         {
-            return new string[] { "value1", "value2" };
+            this.employeeService = service;
+        }
+        // GET: api/v1/employees
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var model = employeeService.GetEmployees();
+
+            //var outputModel = ToOutputModel(model);
+            return Ok(model);
         }
 
-        // GET api/values/5
+        // GET api/v1/employees/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            Employee emp = employeeService.GetEmployee(id);
+            if (emp == null)
+                return NotFound();
+
+            // var outputModel = ToOutputModel(model);
+            return Ok(emp);
         }
 
         // POST api/values
@@ -40,5 +58,13 @@ namespace Mouna.Api.Crud.Controllers.V1
         public void Delete(int id)
         {
         }
+
+        #region " Mappers "
+
+        
+
+      
+
+        #endregion
     }
 }

@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Mouna.Api.Crud.BusinessLogic.Interfaces;
+using Mouna.Api.Crud.BusinessLogic.Services;
+using Newtonsoft.Json.Serialization;
 
 namespace Mouna.Api.Crud
 {
@@ -23,7 +28,9 @@ namespace Mouna.Api.Crud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddCors();
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,8 +40,24 @@ namespace Mouna.Api.Crud
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseMvc();
+
+            app.UseExceptionHandler(configure =>
+            {
+                configure.Run(async context =>
+                {
+                    var ex = context.Features
+                                    .Get<IExceptionHandlerFeature>()
+                                    .Error;
+
+                    context.Response.StatusCode = 500;
+                    await context.Response.WriteAsync($"{ex.Message}");
+                });
+            });
+
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mouna.Api.Crud.BusinessLogic.Interfaces;
 using Mouna.Api.Crud.BusinessLogic.Services;
+using Mouna.Api.Crud.DataAccess.Interfaces;
+using Mouna.Api.Crud.DataAccess.Repository;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -30,6 +32,7 @@ namespace Mouna.Api.Crud
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddCors();
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             services.AddSwaggerGen(c => {

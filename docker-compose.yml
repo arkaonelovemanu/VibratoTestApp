@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+
+  mouna.api.crud:
+    container_name: 'mouna.api.crud'
+    image: 'mouna.api.crud'
+    build:
+      context: .
+      dockerfile: Mouna.Api.Crud/Dockerfile
+    ports:
+     - "5000:5000"
+    depends_on:
+     - sqldb
+
+  sqldb:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: 'sqlserver-test'
+    environment:
+        SA_PASSWORD: "Welcome@1SA"
+        ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"

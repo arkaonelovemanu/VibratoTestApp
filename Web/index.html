@@ -2,13 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <link href="assets/css/site.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 </head>
 <body>
 
     <div ng-app="mainApp" data-ng-controller="CRUDController">
-        <table >
+
+        <table>
             <tr>
                 <td>EmpId: </td>
                 <td>
@@ -28,9 +29,27 @@
                 </td>
             </tr>
             <tr>
-                <td></td>
                 <td>
-                    <input type="button" value="Add Data" />
+                    <input type="button" value="Save Data" data-ng-click="AddData()" />
+                </td>
+                <td>
+                    <input type="button" value="Update Data" data-ng-click="UpdateData()" />
+                </td>
+            </tr>
+        </table>
+
+        <table border="1" style="width: 300px">
+            <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Salary</th>
+            </thead>
+            <tr data-ng-repeat="Emp in EmpList" data-ng-click="BindSelectedData(Emp)">
+                <td>{{ Emp.Id }}</td>
+                <td>{{ Emp.Name }}</td>
+                <td>{{ Emp.Salary }}</td>
+                <td>
+                    <input type="button" value="Delete" data-ng-click="DeleteData(Emp)" />
                 </td>
             </tr>
         </table>
@@ -38,13 +57,51 @@
 
     <script type="text/javascript">
         var app = angular.module("mainApp", []);
-
         app.controller('CRUDController', function ($scope) {
+
             $scope.EmpModel = {
                 Id: 0,
                 Salary: 0,
-                Name: 'XYZ',
+                Name: '',
             };
+
+            $scope.EmpList = [];
+            $scope.AddData = function () {
+                var _emp = {
+                    Id: $scope.EmpList.length + 1,
+                    Name: $scope.EmpModel.Name,
+                    Salary: $scope.EmpModel.Salary
+                };
+                $scope.EmpList.push(_emp);
+                ClearModel();
+            }
+
+            $scope.DeleteData = function (emp) {
+                var _index = $scope.EmpList.indexOf(emp);
+                $scope.EmpList.splice(_index, 1);
+            }
+
+            $scope.BindSelectedData = function (emp) {
+                $scope.EmpModel.Id = emp.Id;
+                $scope.EmpModel.Name = emp.Name;
+                $scope.EmpModel.Salary = emp.Salary;
+            }
+
+            $scope.UpdateData = function () {
+                $.grep($scope.EmpList, function (e) {
+                    if (e.Id == $scope.EmpModel.Id) {
+                        e.Name = $scope.EmpModel.Name;
+                        e.Salary = $scope.EmpModel.Salary;
+                    }
+                });
+                ClearModel();
+            }
+
+            function ClearModel() {
+                $scope.EmpModel.Id = 0;
+                $scope.EmpModel.Name = '';
+                $scope.EmpModel.Salary = 0;
+            }
         });
     </script>
 </body>

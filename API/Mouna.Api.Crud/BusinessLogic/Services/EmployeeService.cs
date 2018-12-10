@@ -13,7 +13,7 @@ namespace Mouna.Api.Crud.BusinessLogic.Services
     public class EmployeeService:IEmployeeService
     {
 
-        private readonly List<EmployeeBLL> employees;
+        //private readonly List<EmployeeBLL> employees;
 
         private readonly IEmployeeRepository employeeRepository;
 

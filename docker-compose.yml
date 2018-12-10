@@ -17,7 +17,7 @@ services:
     image: 'mouna.api.crud'
     build:
       context: .
-      dockerfile: Mouna.Api.Crud/Dockerfile
+      dockerfile: API/Mouna.Api.Crud/Dockerfile
     ports:
      - "5000:5000"
     depends_on:

@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mouna.Api.Crud", "Mouna.Api.Crud\Mouna.Api.Crud.csproj", "{A95E3883-C977-4DAC-9654-32790B37A302}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A247C9CC-8F6B-4E01-A821-5B1941E003EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mouna.Api.Crud", "API\Mouna.Api.Crud\Mouna.Api.Crud.csproj", "{A95E3883-C977-4DAC-9654-32790B37A302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

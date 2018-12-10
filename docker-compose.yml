@@ -1,7 +1,17 @@
 version: '3.4'
 
 services:
-
+  web:
+    container_name: 'mouna.web.crud'
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    ports:
+     - "8080:80"
+    depends_on:
+     - mouna.api.crud
+     - migration
+     - sqldb
   mouna.api.crud:
     container_name: 'mouna.api.crud'
     image: 'mouna.api.crud'

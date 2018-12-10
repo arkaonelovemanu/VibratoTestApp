@@ -16,5 +16,16 @@
     <None Include=".dockerignore" />
     <None Include="Migrations\Dockerfile" />
     <None Include="Migrations\sql\V1__Create_employee_table.sql" />
+    <None Include="Web\assets\css\site.css" />
+    <None Include="Web\assets\js\Module.js" />
+    <None Include="Web\assets\js\Controller.js" />
+    <None Include="Web\assets\js\Service.js" />
+    <None Include="Web\Dockerfile" />
+    <None Include="Web\index.html" />
+    <None Include="Web\src\assets\css\site.css" />
+    <None Include="Web\src\assets\js\Controller.js" />
+    <None Include="Web\src\assets\js\Module.js" />
+    <None Include="Web\src\assets\js\Service.js" />
+    <None Include="Web\src\index.html" />
   </ItemGroup>
 </Project>

@@ -17,9 +17,9 @@
     <None Include="Migrations\Dockerfile" />
     <None Include="Migrations\sql\V1__Create_employee_table.sql" />
     <None Include="Web\assets\css\site.css" />
+    <None Include="Web\assets\js\Module.js" />
+    <None Include="Web\assets\js\Controller.js" />
+    <None Include="Web\assets\js\Service.js" />
     <None Include="Web\index.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Web\assets\js\" />
   </ItemGroup>
 </Project>

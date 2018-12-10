@@ -1,108 +1,80 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <title></title>
-    <link href="assets/css/site.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-</head>
-<body>
+    <!-- Bootstrap-->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    </head>
+<body class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6" style="padding-top:10%">
+            <div ng-app="mainApp" ng-controller="CRUDController" class="form-group">
 
-    <div ng-app="mainApp" data-ng-controller="CRUDController">
+                <table style="width:100%;">
+                    <tr>
+                        <td><label for="exampleInputEmpId">Emp ID:</label></td>
+                        <td>
+                            <input type="text" class="form-control" value="{{ EmpModel.Id }}" readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="exampleInputName">Name:</label></td>
+                        <td>
+                            <input type="text" maxlength="30" class="form-control" ng-model="EmpModel.Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="exampleInputSalary">Salary:</label></td>
+                        <td>
+                            <input type="number" required min="0" maxlength="5" class="form-control" ng-model="EmpModel.Salary" />
+                        </td>
+                    </tr>
+                    <tr style="width:100%">
+                        <td style="text-align:right;"></td>
+                        <td style="text-align:left">
+                            <input type="button" class="btn btn-primary" value="Add" ng-click="AddData()" ng-show="canAdd" />
+                            <input type="button" class="btn btn-primary" value="Update" ng-click="UpdateData()" ng-hide="canAdd" />
+                            <input type="button" class="btn btn-primary" value="Refresh" ng-click="RefreshData()" />
+                        </td>
+                    </tr>
+                </table>
+                <br /><br /><br />
 
-        <table>
-            <tr>
-                <td>EmpId: </td>
-                <td>
-                    <span>{{ EmpModel.Id }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Name:</td>
-                <td>
-                    <input type="text" data-ng-model="EmpModel.Name" />
-                </td>
-            </tr>
-            <tr>
-                <td>Salary:</td>
-                <td>
-                    <input type="number" data-ng-model="EmpModel.Salary" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="button" value="Save Data" data-ng-click="AddData()" />
-                </td>
-                <td>
-                    <input type="button" value="Update Data" data-ng-click="UpdateData()" />
-                </td>
-            </tr>
-        </table>
+                <h2><label for="exampleResult">Results</label></h2>
 
-        <table border="1" style="width: 300px">
-            <thead>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Salary</th>
-            </thead>
-            <tr data-ng-repeat="Emp in EmpList" data-ng-click="BindSelectedData(Emp)">
-                <td>{{ Emp.Id }}</td>
-                <td>{{ Emp.Name }}</td>
-                <td>{{ Emp.Salary }}</td>
-                <td>
-                    <input type="button" value="Delete" data-ng-click="DeleteData(Emp)" />
-                </td>
-            </tr>
-        </table>
+                <table border="1" style="width: 100%">
+                    <thead>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Salary</th>
+                    <th>Delete</th>
+                    </thead>
+                    <tr ng-repeat="Emp in EmpList" ng-click="BindSelectedData(Emp)">
+                        <td><a href="#">{{ Emp.Id }}</a></td>
+                        <td><a href="#">{{ Emp.Name }}</a></td>
+                        <td>{{ Emp.Salary }}</td>
+                        <td>
+                            <input type="button" value="Delete" ng-click="DeleteData(Emp)" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-3"></div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+    <script src="assets/js/Module.js"></script>
+    <script src="assets/js/Controller.js"></script>
+    <script src="assets/js/Service.js"></script>
 
-    <script type="text/javascript">
-        var app = angular.module("mainApp", []);
-        app.controller('CRUDController', function ($scope) {
+    <!-- Bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-            $scope.EmpModel = {
-                Id: 0,
-                Salary: 0,
-                Name: '',
-            };
-
-            $scope.EmpList = [];
-            $scope.AddData = function () {
-                var _emp = {
-                    Id: $scope.EmpList.length + 1,
-                    Name: $scope.EmpModel.Name,
-                    Salary: $scope.EmpModel.Salary
-                };
-                $scope.EmpList.push(_emp);
-                ClearModel();
-            }
-
-            $scope.DeleteData = function (emp) {
-                var _index = $scope.EmpList.indexOf(emp);
-                $scope.EmpList.splice(_index, 1);
-            }
-
-            $scope.BindSelectedData = function (emp) {
-                $scope.EmpModel.Id = emp.Id;
-                $scope.EmpModel.Name = emp.Name;
-                $scope.EmpModel.Salary = emp.Salary;
-            }
-
-            $scope.UpdateData = function () {
-                $.grep($scope.EmpList, function (e) {
-                    if (e.Id == $scope.EmpModel.Id) {
-                        e.Name = $scope.EmpModel.Name;
-                        e.Salary = $scope.EmpModel.Salary;
-                    }
-                });
-                ClearModel();
-            }
-
-            function ClearModel() {
-                $scope.EmpModel.Id = 0;
-                $scope.EmpModel.Name = '';
-                $scope.EmpModel.Salary = 0;
-            }
-        });
-    </script>
 </body>
 </html>  

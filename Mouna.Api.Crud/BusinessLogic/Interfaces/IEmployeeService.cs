@@ -1,5 +1,6 @@
 ﻿using Mouna.Api.Crud.BusinessLogic.Models;
 using Mouna.Api.Crud.Entities;
+using Mouna.Api.Crud.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Mouna.Api.Crud.BusinessLogic.Interfaces
 {
     public interface IEmployeeService
     {
-        List<EmployeeBLL> GetEmployees();
-        EmployeeBLL GetEmployee(int id);
-        void AddEmployee(EmployeeBLL item);
-        void UpdateEmployee(EmployeeBLL item);
-        void DeleteEmployee(int id);
+        ResponseData<List<EmployeeBLL>> GetEmployees();
+        ResponseData<List<EmployeeBLL>> GetEmployee(int id);
+        ResponseData<List<EmployeeBLL>> AddEmployee(EmployeeBLL item);
+        ResponseData<List<EmployeeBLL>> UpdateEmployee(EmployeeBLL item);
+        ResponseData<List<EmployeeBLL>> DeleteEmployee(int id);
         bool EmployeeExists(int id);
     }
 }

@@ -7,49 +7,52 @@ using Mouna.Api.Crud.Entities;
 using Mouna.Api.Crud.BusinessLogic.Mapper;
 using Mouna.Api.Crud.BusinessLogic.Interfaces;
 using Mouna.Api.Crud.DataAccess.Interfaces;
+using Mouna.Api.Crud.Lib;
 
 namespace Mouna.Api.Crud.BusinessLogic.Services
 {
     public class EmployeeService:IEmployeeService
     {
 
-        private readonly List<EmployeeBLL> employees;
+       // private readonly List<EmployeeBLL> employees;
+        private  IMapBLL _mapper;
 
-        private readonly IEmployeeRepository employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeService(IEmployeeRepository repo)
+        public EmployeeService(IMapBLL mapper, IEmployeeRepository repo)
         {
-            this.employeeRepository = repo;
+            this._mapper = mapper;
+            this._employeeRepository = repo;
         }
 
-        public List<EmployeeBLL> GetEmployees()
+        public ResponseData<List<EmployeeBLL>> GetEmployees()
         {
-            return Map.ToBLL(employeeRepository.GetEmployees().ToList());
+            return _mapper.ToBLL(_employeeRepository.GetEmployees());
         }
 
-        public EmployeeBLL GetEmployee(int id)
+        public ResponseData<List<EmployeeBLL>> GetEmployee(int id)
         {
-            return Map.ToBLL(employeeRepository.GetEmployee(id).ToList().Where(m => m.Id == id).FirstOrDefault());
+            return _mapper.ToBLL(_employeeRepository.GetEmployees());
         }
 
-        public void AddEmployee(EmployeeBLL item)
+        public ResponseData<List<EmployeeBLL>> AddEmployee(EmployeeBLL item)
         {
-            int numberOfRowsAffected = employeeRepository.AddEmployee(Map.ToDataAccess(item));
+            return _mapper.ToBLL(_employeeRepository.AddEmployee(_mapper.ToDataAccess(item)));
         }
 
-        public void UpdateEmployee(EmployeeBLL item)
+        public ResponseData<List<EmployeeBLL>> UpdateEmployee(EmployeeBLL item)
         {
-            int numberOfRowsAffected = employeeRepository.UpdateEmployee(Map.ToDataAccess(item));
+            return _mapper.ToBLL(_employeeRepository.UpdateEmployee(_mapper.ToDataAccess(item)));
         }
 
-        public void DeleteEmployee(int id)
+        public ResponseData<List<EmployeeBLL>> DeleteEmployee(int id)
         {
-            int numberOfRowsAffected = employeeRepository.DeleteEmployee(id);
+            return _mapper.ToBLL(_employeeRepository.DeleteEmployee(id));
         }
 
         public bool EmployeeExists(int id)
         {
-            return employeeRepository.GetEmployee(id).ToList().Any(m => m.Id == id);
+            return _employeeRepository.GetEmployee(id).Data.ToList().Any(m => m.Id == id);
         }
     }
 }

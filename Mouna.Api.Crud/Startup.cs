@@ -13,7 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mouna.Api.Crud.BusinessLogic.Interfaces;
+using Mouna.Api.Crud.BusinessLogic.Mapper;
 using Mouna.Api.Crud.BusinessLogic.Services;
+using Mouna.Api.Crud.Controllers.Mapper;
 using Mouna.Api.Crud.DataAccess.Interfaces;
 using Mouna.Api.Crud.DataAccess.Repository;
 using Newtonsoft.Json.Serialization;
@@ -36,9 +38,12 @@ namespace Mouna.Api.Crud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddSingleton<IMap, Map>();
+            services.AddSingleton<IMapBLL, MapBLL>();
             services.AddSingleton<IEmployeeService, EmployeeService>();
             logger.LogInformation("Added EmployeeService to controller");
-            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             logger.LogInformation("Added EmployeeRepository to services");
             services.AddCors();
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
@@ -62,7 +67,9 @@ namespace Mouna.Api.Crud
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:8080").AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials());
 
             app.UseMvc();
             app.UseSwagger();

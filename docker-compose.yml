@@ -25,7 +25,7 @@ services:
      - migration
 
   migration:
-    container_name: 'flyaway-test'
+    container_name: 'mouna.flyaway.crud'
     build:
       context: .
       dockerfile: Migrations/Dockerfile
@@ -36,7 +36,7 @@ services:
       - sqldb
   sqldb:
     image: "mcr.microsoft.com/mssql/server"
-    container_name: 'sqlserver-test'
+    container_name: 'mouna.sqlserver.crud'
     environment:
         SA_PASSWORD: "Welcome@1SA"
         ACCEPT_EULA: "Y"

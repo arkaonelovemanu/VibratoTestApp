@@ -17,36 +17,32 @@ namespace Mouna.Api.Crud.Controllers.V1
         private readonly IEmployeeService _employeeService;
         private  ILogger _logger;
         private  IMap _mapper;
-       // private  ResponseData<List<Employee>> _responseData;
+        private ResponseData<List<Employee>> _responseData = new ResponseData<List<Employee>>();
 
         public EmployeeController(IEmployeeService service, IMap mapper, ILogger<EmployeeController> log)
         {
             _mapper = mapper;
             _employeeService = service;
             _logger = log;
-            //_responseData = responseData;
-
         }
         // GET: api/v1/employees
         [HttpGet]
         public IActionResult Get()
         {
-            ResponseData<List<Employee>> _responseData = new ResponseData<List<Employee>>();
             _logger.LogInformation(LoggingEvents.GetAllEmployees, "Getting employee list");
-            _responseData = _mapper.ToEntity(_employeeService.GetEmployees());
 
-            //var outputModel = ToOutputModel(model);
+                _responseData = _mapper.ToEntity(_employeeService.GetEmployees());
+
             if (_responseData.returnCode == APIErrorCode.Ok)
                 return Ok(_responseData.Data);
             else
-                return BadRequest();
+                throw new ApplicationException("An exception occurred in one of the layers") ;
         }
 
         // GET api/v1/employees/5
         [HttpGet("{id}", Name = "GetEmployeeById")]
         public IActionResult Get(int id)
         {
-            ResponseData<List<Employee>> _responseData = new ResponseData<List<Employee>>();
             _logger.LogInformation(LoggingEvents.GetEmployeeById, "Getting employee {ID}", id);
             _responseData = _mapper.ToEntity(_employeeService.GetEmployee(id));
             if (_responseData.Data == null)
@@ -55,15 +51,16 @@ namespace Mouna.Api.Crud.Controllers.V1
                 return NotFound();
             }
 
-            // var outputModel = ToOutputModel(model);
-            return Ok(_responseData.Data);
+            if (_responseData.returnCode == APIErrorCode.Ok)
+                return Ok(_responseData.Data);
+            else
+                throw new ApplicationException("An exception occurred in one of the layers");
         }
 
         // POST: api/employees
         [HttpPost]
         public IActionResult Post([FromBody]Employee inputModel)
         {
-            ResponseData<List<Employee>> _responseData = new ResponseData<List<Employee>>();
             if (inputModel == null)
             {
                 _logger.LogWarning(LoggingEvents.InputModelFormatIncorrect, "Incorrect format of input model");
@@ -78,14 +75,18 @@ namespace Mouna.Api.Crud.Controllers.V1
             _logger.LogInformation(LoggingEvents.AddEmployee, "Trying to add employee {Name}", inputModel.Name);
             _employeeService.AddEmployee(_mapper.ToDomainModel(inputModel));
             _logger.LogInformation(LoggingEvents.AddEmployee, "Adding employee {Name} successful", inputModel.Name);
-            return CreatedAtRoute("GetEmployeeById", new { id = inputModel.Id }, inputModel);
+
+            if (_responseData.returnCode == APIErrorCode.Created)
+                return CreatedAtRoute("GetEmployeeById", new { id = _responseData.Data.First().Id }, _responseData.Data.First());
+            else
+                throw new ApplicationException("An exception occurred in one of the layers");
+            
         }
 
         // PUT: api/employees/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Employee inputModel)
         {
-            ResponseData<List<Employee>> _responseData = new ResponseData<List<Employee>>();
             if (inputModel == null || id != inputModel.Id)
             {
                 _logger.LogWarning(LoggingEvents.InputModelFormatIncorrect, "Incorrect format of input model");
@@ -107,7 +108,10 @@ namespace Mouna.Api.Crud.Controllers.V1
             _logger.LogInformation(LoggingEvents.AddEmployee, "Trying to update employee {Name}", inputModel.Name);
             _responseData=_mapper.ToEntity(_employeeService.UpdateEmployee(_mapper.ToDomainModel(inputModel)));
             _logger.LogInformation(LoggingEvents.AddEmployee, "Updating employee {Name} successful", inputModel.Name);
-            return NoContent();
+            if (_responseData.returnCode == APIErrorCode.NoContent)
+                return NoContent();
+            else
+                throw new ApplicationException("An exception occurred in one of the layers");
         }
 
         // DELETE: api/employees/5
@@ -123,7 +127,10 @@ namespace Mouna.Api.Crud.Controllers.V1
             _logger.LogInformation(LoggingEvents.AddEmployee, "Trying to delete employee {0}", id);
             _responseData = _mapper.ToEntity(_employeeService.DeleteEmployee(id));
             _logger.LogInformation(LoggingEvents.AddEmployee, "Deleted employee {0}", id);
-            return NoContent();
+            if (_responseData.returnCode == APIErrorCode.NoContent)
+                return NoContent();
+            else
+                throw new ApplicationException("An exception occurred in one of the layers");
         }
     }
 }

@@ -10,13 +10,6 @@ namespace Mouna.Api.Crud.Controllers.Mapper
 {
     public  class Map:IMap
     {
-        //private  ResponseData<List<Employee>> _responseData;
-
-        public Map()
-        {
-            //_responseData = responseData;
-        }
-
         public EmployeeBLL ToDomainModel(Employee inputModel)
         {
             return new EmployeeBLL
@@ -28,8 +21,6 @@ namespace Mouna.Api.Crud.Controllers.Mapper
         }
         public  ResponseData<List<Employee>> ToEntity(ResponseData<List<EmployeeBLL>> responseFromBLL)
         {
-            //_responseData.Data= responseFromBLL.Data.ConvertAll(x => new Employee { Id = x.Id, Name = x.Name, Salary = x.Salary });
-           // _responseData.returnCode = responseFromBLL.returnCode;
             return new ResponseData<List<Employee>> { Data= responseFromBLL.Data.ConvertAll(x => new Employee { Id = x.Id, Name = x.Name, Salary = x.Salary }), returnCode=responseFromBLL.returnCode } ;
         }
     }

@@ -18,6 +18,7 @@ namespace Mouna.Api.Crud.DataAccess.Repository
         //private IDbConnection _connection;
         private readonly IConfiguration _config;
         private  ILogger _logger;
+        private ResponseData<IEnumerable<EmployeeDAL>> _response = new ResponseData<IEnumerable<EmployeeDAL>>();
 
         public EmployeeRepository(IConfiguration config, ILogger<EmployeeRepository> logger )
         {
@@ -40,21 +41,21 @@ namespace Mouna.Api.Crud.DataAccess.Repository
     
         public ResponseData<IEnumerable<EmployeeDAL>> GetEmployees()
         {
-            ResponseData<IEnumerable<EmployeeDAL>> _response = new ResponseData<IEnumerable<EmployeeDAL>>();
+            
             using (IDbConnection _connection = Connection)
             {
                 try
                 {
                     _connection.Open();
-                    _logger.LogInformation(LoggingEvents.GetAllEmployees, "Getting employee list");
+                    _logger.LogInformation(LoggingEvents.GetAllEmployees, "Repository:Getting employee list");
                     _response.Data=_connection.Query<EmployeeDAL>(getAllEmployeesSqlQuery);
                     _response.returnCode = APIErrorCode.Ok;
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Getting employee list done");
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting employee list done");
                     _connection.Close();
                 }
                 catch(Exception ex)
                 {
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Getting employee exception in DAL",ex.Message);
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting employee exception in DAL", ex.Message);
                     _response.returnCode=APIErrorCode.DatabaseConnectionIssue;
                 }       
             }
@@ -63,22 +64,21 @@ namespace Mouna.Api.Crud.DataAccess.Repository
         }
 
         public ResponseData<IEnumerable<EmployeeDAL>> GetEmployee(int id)
-        {
-            ResponseData<IEnumerable<EmployeeDAL>> _response = new ResponseData<IEnumerable<EmployeeDAL>>();
+        {           
             using (IDbConnection _connection = Connection)
             {
                 try
                 {
                     _connection.Open();
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Getting employee by id {0}",id);
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting employee by id {0}", id);
                     _response.Data = _connection.Query<EmployeeDAL>(getEmployeeByIdSqlQuery, new { Id = id });
                     _response.returnCode = APIErrorCode.Ok;
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Getting employee by id {0}", id);
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting employee by id {0}", id);
                     _connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Getting employee by id exception", ex.Message);
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting employee by id exception", ex.Message);
                     _response.returnCode = APIErrorCode.DatabaseConnectionIssue;
                 }
             }
@@ -87,21 +87,20 @@ namespace Mouna.Api.Crud.DataAccess.Repository
 
         public ResponseData<IEnumerable<EmployeeDAL>> DeleteEmployee(int id)
         {
-            ResponseData<IEnumerable<EmployeeDAL>> _response = new ResponseData<IEnumerable<EmployeeDAL>>();
             using (IDbConnection _connection = Connection)
             {
                 try
                 {
                     _connection.Open();
-                    _logger.LogInformation(LoggingEvents.DeleteEmployee, "Deleting employee by id {0}", id);
+                    _logger.LogInformation(LoggingEvents.DeleteEmployee, "Repository:Deleting employee by id {0}", id);
                     _connection.Execute(deleteEmployeeByIdSqlQuery, new { Id = id });
                     _response.returnCode = APIErrorCode.NoContent;
-                    _logger.LogInformation(LoggingEvents.DeleteEmployee, "Deleting employee by id {0} done", id);
+                    _logger.LogInformation(LoggingEvents.DeleteEmployee, "Repository:Deleting employee by id {0} done", id);
                     _connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation(LoggingEvents.DeleteEmployee, "Deleting employee by id exception", ex.Message);
+                    _logger.LogInformation(LoggingEvents.DeleteEmployee, "Repository:Deleting employee by id exception", ex.Message);
                     _response.returnCode = APIErrorCode.DatabaseConnectionIssue;
                 }
             }
@@ -111,21 +110,20 @@ namespace Mouna.Api.Crud.DataAccess.Repository
 
         public ResponseData<IEnumerable<EmployeeDAL>> AddEmployee(EmployeeDAL employeeToBeAdded)
         {
-            ResponseData<IEnumerable<EmployeeDAL>> _response = new ResponseData<IEnumerable<EmployeeDAL>>();
             using (IDbConnection _connection = Connection)
             {
                 try
                 {
                     _connection.Open();
-                    _logger.LogInformation(LoggingEvents.AddEmployee, "Adding employee by id {0}", employeeToBeAdded.Id);
+                    _logger.LogInformation(LoggingEvents.AddEmployee, "Repository:Adding employee by id {0}", employeeToBeAdded.Id);
                     _connection.Execute(insertEmployeeSqlQuery, new { employeeToBeAdded.Id, employeeToBeAdded.Name, employeeToBeAdded.Salary });
                     _response.returnCode = APIErrorCode.Created;
-                    _logger.LogInformation(LoggingEvents.AddEmployee, "Adding employee by id {0} done", employeeToBeAdded.Id);
+                    _logger.LogInformation(LoggingEvents.AddEmployee, "Repository:Adding employee by id {0} done", employeeToBeAdded.Id);
                     _connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation(LoggingEvents.AddEmployee, "AddEmployee employee by id exception", ex.Message);
+                    _logger.LogInformation(LoggingEvents.AddEmployee, "Repository:AddEmployee employee by id exception", ex.Message);
                     _response.returnCode = APIErrorCode.DatabaseConnectionIssue;
                 }
             }
@@ -134,21 +132,20 @@ namespace Mouna.Api.Crud.DataAccess.Repository
 
         public ResponseData<IEnumerable<EmployeeDAL>> UpdateEmployee(EmployeeDAL employeeToBeUpdated)
         {
-            ResponseData<IEnumerable<EmployeeDAL>> _response = new ResponseData<IEnumerable<EmployeeDAL>>();
             using (IDbConnection _connection = Connection)
             {
                 try
                 {
                     _connection.Open();
-                    _logger.LogInformation(LoggingEvents.UpdateEmployee, "Updating employee by id {0}", employeeToBeUpdated.Id);
+                    _logger.LogInformation(LoggingEvents.UpdateEmployee, "Repository:Updating employee by id {0}", employeeToBeUpdated.Id);
                     _connection.Execute(updateEmployeeSqlQuery, new { employeeToBeUpdated.Id, employeeToBeUpdated.Name, employeeToBeUpdated.Salary });
                     _response.returnCode = APIErrorCode.NoContent;
-                    _logger.LogInformation(LoggingEvents.UpdateEmployee, "Adding employee by id {0} done", employeeToBeUpdated.Id);
+                    _logger.LogInformation(LoggingEvents.UpdateEmployee, "Repository:Updating employee by id {0} done", employeeToBeUpdated.Id);
                     _connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation(LoggingEvents.UpdateEmployee, "AddEmployee employee by id exception", ex.Message);
+                    _logger.LogInformation(LoggingEvents.UpdateEmployee, "Repository:Updating employee by id exception", ex.Message);
                     _response.returnCode = APIErrorCode.DatabaseConnectionIssue;
                 }
             }

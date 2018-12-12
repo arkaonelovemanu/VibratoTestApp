@@ -18,6 +18,7 @@ using Mouna.Api.Crud.BusinessLogic.Services;
 using Mouna.Api.Crud.Controllers.Mapper;
 using Mouna.Api.Crud.DataAccess.Interfaces;
 using Mouna.Api.Crud.DataAccess.Repository;
+using Mouna.Api.Crud.Lib;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -31,17 +32,15 @@ namespace Mouna.Api.Crud
         {
             Configuration = config;
             logger = log;
-
-
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             
-            services.AddSingleton<IMap, Map>();
-            services.AddSingleton<IMapBLL, MapBLL>();
-            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddTransient<IMap, Map>();
+            services.AddTransient<IMapBLL, MapBLL>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
             logger.LogInformation("Added EmployeeService to controller");
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             logger.LogInformation("Added EmployeeRepository to services");
@@ -70,7 +69,7 @@ namespace Mouna.Api.Crud
             app.UseCors(builder => builder.WithOrigins("http://localhost:8080").AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());
-
+           // app.UseMiddleware<ExceptionMiddleware>();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c => {

@@ -50,7 +50,7 @@ namespace Mouna.Api.Crud.DataAccess.Repository
                     _logger.LogInformation(LoggingEvents.GetAllEmployees, "Repository:Getting all employees");
                     _response.Data=_connection.Query<EmployeeDAL>(getAllEmployeesSqlQuery);
                     _response.returnCode = APIErrorCode.Ok;
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting all employees done");
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting all employee done");
                     _connection.Close();
                 }
                 catch(Exception ex)
@@ -117,6 +117,7 @@ namespace Mouna.Api.Crud.DataAccess.Repository
                     _connection.Open();
                     _logger.LogInformation(LoggingEvents.AddEmployee, "Repository:Adding employee by id {0}", employeeToBeAdded.Id);
                     _connection.Execute(insertEmployeeSqlQuery, new { employeeToBeAdded.Id, employeeToBeAdded.Name, employeeToBeAdded.Salary });
+                    _response.Data = Enumerable.Repeat(employeeToBeAdded, 1);
                     _response.returnCode = APIErrorCode.Created;
                     _logger.LogInformation(LoggingEvents.AddEmployee, "Repository:Adding employee by id {0} done", employeeToBeAdded.Id);
                     _connection.Close();
@@ -139,6 +140,7 @@ namespace Mouna.Api.Crud.DataAccess.Repository
                     _connection.Open();
                     _logger.LogInformation(LoggingEvents.UpdateEmployee, "Repository:Updating employee by id {0}", employeeToBeUpdated.Id);
                     _connection.Execute(updateEmployeeSqlQuery, new { employeeToBeUpdated.Id, employeeToBeUpdated.Name, employeeToBeUpdated.Salary });
+                    _response.Data = Enumerable.Repeat(employeeToBeUpdated, 1);
                     _response.returnCode = APIErrorCode.NoContent;
                     _logger.LogInformation(LoggingEvents.UpdateEmployee, "Repository:Updating employee by id {0} done", employeeToBeUpdated.Id);
                     _connection.Close();

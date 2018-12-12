@@ -73,7 +73,7 @@ namespace Mouna.Api.Crud.Controllers.V1
                 return Unprocessable(ModelState);
             }
             _logger.LogInformation(LoggingEvents.AddEmployee, "Trying to add employee {Name}", inputModel.Name);
-            _employeeService.AddEmployee(_mapper.ToDomainModel(inputModel));
+            _responseData=_mapper.ToEntity(_employeeService.AddEmployee(_mapper.ToDomainModel(inputModel)));
             _logger.LogInformation(LoggingEvents.AddEmployee, "Adding employee {Name} successful", inputModel.Name);
 
             if (_responseData.returnCode == APIErrorCode.Created)

@@ -13,7 +13,7 @@ So, summing up, there are 4 docker images running on linux containers,all of the
     #### git clone https://github.com/arkaonelovemanu/VibratoTestApp.git
 
 3. Navigate to the root of the repo
-    #### $ cd app-demo-infra
+    #### $ cd VibratoTestApp
 4. Run docker compose command to build the images and run the containers.
     #### `docker-compose up`
 

@@ -3,6 +3,7 @@ WORKDIR /app
 
 ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 ENV ASPNETCORE_URLS=http://*:5000
+HEALTHCHECK --interval=20s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:5000/api/V1/Health || exit 1
 
 EXPOSE 5000
 

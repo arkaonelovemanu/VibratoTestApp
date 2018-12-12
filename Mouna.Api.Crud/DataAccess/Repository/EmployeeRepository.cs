@@ -47,10 +47,10 @@ namespace Mouna.Api.Crud.DataAccess.Repository
                 try
                 {
                     _connection.Open();
-                    _logger.LogInformation(LoggingEvents.GetAllEmployees, "Repository:Getting employee list");
+                    _logger.LogInformation(LoggingEvents.GetAllEmployees, "Repository:Getting all employees");
                     _response.Data=_connection.Query<EmployeeDAL>(getAllEmployeesSqlQuery);
                     _response.returnCode = APIErrorCode.Ok;
-                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting employee list done");
+                    _logger.LogInformation(LoggingEvents.GetEmployeeById, "Repository:Getting all employees done");
                     _connection.Close();
                 }
                 catch(Exception ex)

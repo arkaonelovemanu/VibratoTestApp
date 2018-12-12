@@ -20,7 +20,7 @@ namespace Mouna.Api.Crud.BusinessLogic.Services
         private ILogger _logger;
         private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeService(IMapBLL mapper, IEmployeeRepository repo, ILogger logger)
+        public EmployeeService(IMapBLL mapper, IEmployeeRepository repo, ILogger<EmployeeService> logger)
         {
             this._mapper = mapper;
             this._employeeRepository = repo;

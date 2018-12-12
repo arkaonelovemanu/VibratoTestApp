@@ -29,7 +29,7 @@ namespace Mouna.Api.Crud.Lib
 
                 if (ex is ApplicationException)
                 {
-                    await context.Response.WriteAsync(ex.Message);
+                    await context.Response.WriteAsync(ex.StackTrace);
                 }
             }
         }

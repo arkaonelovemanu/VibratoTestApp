@@ -69,7 +69,7 @@ namespace Mouna.Api.Crud
             app.UseCors(builder => builder.WithOrigins("http://localhost:8080").AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());
-           // app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c => {

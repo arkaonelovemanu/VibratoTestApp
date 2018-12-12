@@ -7,49 +7,104 @@ using Mouna.Api.Crud.Entities;
 using Mouna.Api.Crud.BusinessLogic.Mapper;
 using Mouna.Api.Crud.BusinessLogic.Interfaces;
 using Mouna.Api.Crud.DataAccess.Interfaces;
+using Mouna.Api.Crud.Lib;
+using Microsoft.Extensions.Logging;
 
 namespace Mouna.Api.Crud.BusinessLogic.Services
 {
     public class EmployeeService:IEmployeeService
     {
 
-        private readonly List<EmployeeBLL> employees;
+       // private readonly List<EmployeeBLL> employees;
+        private  IMapBLL _mapper;
+        private ILogger _logger;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        private readonly IEmployeeRepository employeeRepository;
-
-        public EmployeeService(IEmployeeRepository repo)
+        public EmployeeService(IMapBLL mapper, IEmployeeRepository repo, ILogger<EmployeeService> logger)
         {
-            this.employeeRepository = repo;
+            this._mapper = mapper;
+            this._employeeRepository = repo;
+            this._logger = logger;
         }
 
-        public List<EmployeeBLL> GetEmployees()
+        public ResponseData<List<EmployeeBLL>> GetEmployees()
         {
-            return Map.ToBLL(employeeRepository.GetEmployees().ToList());
+            _logger.LogInformation(LoggingEvents.GetAllEmployees, "BLL:Getting all employees");
+            try
+            {
+                return _mapper.ToBLL(_employeeRepository.GetEmployees());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(LoggingEvents.GetAllEmployees, "BLL:Getting all employees  exception", ex.Message);
+                return new ResponseData<List<EmployeeBLL>> { returnCode = APIErrorCode.InternalServerError };
+            }
+            
         }
 
-        public EmployeeBLL GetEmployee(int id)
+        public ResponseData<List<EmployeeBLL>> GetEmployee(int id)
         {
-            return Map.ToBLL(employeeRepository.GetEmployee(id).ToList().Where(m => m.Id == id).FirstOrDefault());
+            
+            _logger.LogInformation(LoggingEvents.GetEmployeeById, "BLL:Getting employee by id {0}", id);
+            try
+            {
+                return _mapper.ToBLL(_employeeRepository.GetEmployee(id));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(LoggingEvents.GetEmployeeById, "BLL:Getting employee by id exception", ex.Message);
+                return new ResponseData<List<EmployeeBLL>> { returnCode = APIErrorCode.InternalServerError };
+            }
         }
 
-        public void AddEmployee(EmployeeBLL item)
-        {
-            int numberOfRowsAffected = employeeRepository.AddEmployee(Map.ToDataAccess(item));
+        public ResponseData<List<EmployeeBLL>> AddEmployee(EmployeeBLL item)
+        { 
+            _logger.LogInformation(LoggingEvents.AddEmployee, "BLL:Adding employee by id {0}", item.Id);
+            try
+            {
+                return _mapper.ToBLL(_employeeRepository.AddEmployee(_mapper.ToDataAccess(item)));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(LoggingEvents.AddEmployee, "BLL:Adding employee by id exception", ex.Message);
+                return new ResponseData<List<EmployeeBLL>> { returnCode = APIErrorCode.InternalServerError };
+            }
         }
 
-        public void UpdateEmployee(EmployeeBLL item)
+        public ResponseData<List<EmployeeBLL>> UpdateEmployee(EmployeeBLL item)
         {
-            int numberOfRowsAffected = employeeRepository.UpdateEmployee(Map.ToDataAccess(item));
+            _logger.LogInformation(LoggingEvents.UpdateEmployee, "BLL:Updating employee by id {0}", item.Id);
+            try
+            {
+                return _mapper.ToBLL(_employeeRepository.UpdateEmployee(_mapper.ToDataAccess(item)));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogInformation(LoggingEvents.UpdateEmployee, "BLL:Updating employee by id exception", ex.Message);
+                return new ResponseData<List<EmployeeBLL>> { returnCode = APIErrorCode.InternalServerError };
+            }
+       
         }
 
-        public void DeleteEmployee(int id)
+        public ResponseData<List<EmployeeBLL>> DeleteEmployee(int id)
         {
-            int numberOfRowsAffected = employeeRepository.DeleteEmployee(id);
+
+            _logger.LogInformation(LoggingEvents.DeleteEmployee, "BLL:Deleting employee by id {0}", id);
+            try
+            {
+                return _mapper.ToBLL(_employeeRepository.DeleteEmployee(id));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(LoggingEvents.DeleteEmployee, "BLL:Deleting employee by id exception", ex.Message);
+                return new ResponseData<List<EmployeeBLL>> { returnCode = APIErrorCode.InternalServerError };
+            }
         }
 
         public bool EmployeeExists(int id)
         {
-            return employeeRepository.GetEmployee(id).ToList().Any(m => m.Id == id);
+            _logger.LogInformation(LoggingEvents.UpdateEmployee, "BLL:Checking employee by id {0}", id);
+            return _employeeRepository.GetEmployee(id).Data.ToList().Any(m => m.Id == id);
         }
     }
 }

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mouna.Api.Crud.BusinessLogic.Models;
 using Mouna.Api.Crud.Entities;
+using Mouna.Api.Crud.Lib;
 
 namespace Mouna.Api.Crud.Controllers.Mapper
 {
-    public static class Map
+    public  class Map:IMap
     {
-
-        public static EmployeeBLL ToDomainModel(Employee inputModel)
+        public EmployeeBLL ToDomainModel(Employee inputModel)
         {
             return new EmployeeBLL
             {
@@ -19,21 +19,9 @@ namespace Mouna.Api.Crud.Controllers.Mapper
                 Salary = inputModel.Salary
             };
         }
-
-        public static Employee ToEntity(EmployeeBLL inputModel)
+        public  ResponseData<List<Employee>> ToEntity(ResponseData<List<EmployeeBLL>> responseFromBLL)
         {
-            return new Employee
-            {
-                Id = inputModel.Id,
-                Name = inputModel.Name,
-                Salary = inputModel.Salary
-            };
-        }
-
-
-        public static List<Employee> ToEntity(List<EmployeeBLL> inputModelList)
-        {
-            return inputModelList.ConvertAll(x => new Employee { Id = x.Id, Name = x.Name, Salary = x.Salary });
+            return new ResponseData<List<Employee>> { Data= responseFromBLL.Data.ConvertAll(x => new Employee { Id = x.Id, Name = x.Name, Salary = x.Salary }), returnCode=responseFromBLL.returnCode } ;
         }
     }
 }

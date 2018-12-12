@@ -19,7 +19,7 @@ So, summing up, there are 4 docker images running on linux containers,all of the
 
 5. Navigate to http://localhost:8080 (http://192.168.99.100:8080 if using Docker Toolbox) in your browser to view the site.
 
-  #### Additionally, you can navigate to http://localhost:5000 to open the swagger UI of API
+  #### Additionally, you can navigate to http://localhost:5000 to open the swagger UI of API.The healthcheck endpoint url is http://localhost:5000/api/V1/Health
 
 ## Thoughts
-This was a great assignment. I had never got the oppurtunity to work hands on with Docker before this was a great learning curve.Glueing the things and orchestrating them together from a single yaml file is very cool. Also, I spent some time refining the API to enable logging, CORS, mappers, DI,swagger  and a middleware for exception handling. I also thought of including a JWT middleware so that the API authorizes users based on tokens and claims but felt it would consume some more time. The web application uses Angular 1.5 because I it served the purpose of simple data binding and making rest http calls to the api.
+This was a great assignment. I had never got the oppurtunity to work hands on with Docker before this was a great learning curve.Glueing the things and orchestrating them together from a single yaml file is very cool. Also, I spent some time refining the API to enable logging, CORS, mappers, DI,swagger,healthcheck  and a middleware for exception handling. I also thought of including a JWT middleware so that the API authorizes users based on tokens and claims but felt it would consume some more time. The web application uses Angular 1.5 because I it served the purpose of simple data binding and making rest http calls to the api.
